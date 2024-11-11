@@ -48,7 +48,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
                 """;
         return jdbcTemplate.query(sql,customerRowMapper,email)
                 .stream()
-                .anyMatch(customer -> customer.getEmail() ==email);
+                .anyMatch(customer -> customer.getEmail().equals(email));
     }
 
     @Override
@@ -72,14 +72,31 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
 
     @Override
     public void updateThisCustomer(Customer customer) {
-        var sql = """
-               UPDATE customer
-               SET name = ?,
-                 email = ?,
-                 age = ?
-               WHERE id = ?
-                """;
-        int result= jdbcTemplate.update(sql,customer.getName(),customer.getEmail(),customer.getAge(),customer.getId());
-        System.out.println("jdbcTemplate.update.mÀJ = "+result);
+        if (customer.getName() != null) {
+            String sql = "UPDATE customer SET name = ? WHERE id = ?";
+            int result = jdbcTemplate.update(
+                    sql,
+                    customer.getName(),
+                    customer.getId()
+            );
+            System.out.println("update customer name result = " + result);
+        }
+        if (customer.getAge() != null) {
+            String sql = "UPDATE customer SET age = ? WHERE id = ?";
+            int result = jdbcTemplate.update(
+                    sql,
+                    customer.getAge(),
+                    customer.getId()
+            );
+            System.out.println("update customer age result = " + result);
+        }
+        if (customer.getEmail() != null) {
+            String sql = "UPDATE customer SET email = ? WHERE id = ?";
+            int result = jdbcTemplate.update(
+                    sql,
+                    customer.getEmail(),
+                    customer.getId());
+            System.out.println("update customer email result = " + result);
+        }
     }
 }

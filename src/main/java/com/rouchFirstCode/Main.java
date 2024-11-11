@@ -29,7 +29,7 @@ public class Main {
                     .toLocalDate();
             int age = Period.between(birthDate, LocalDate.now()).getYears();
             Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), age);
-          //  customerRepository.save(customer);
+           // customerRepository.save(customer);
             /*
             List<Customer> customers = new ArrayList<>();
             customers.add(new Customer("rouch","adissa",21));
@@ -39,7 +39,7 @@ public class Main {
 
         };
     }
-
+/*
    @Bean
     public Foo getFoo(){
         return new Foo("bar");
@@ -52,4 +52,5 @@ public class Main {
             System.out.println("un bean: " + b);
         }
     }
+ */
 }
