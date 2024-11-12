@@ -34,9 +34,9 @@ public abstract class AbstractTestContainers {
 
     @DynamicPropertySource
     private static void registerDataSourceProperties(DynamicPropertyRegistry registry){
-        registry.add("spring.datasource.url", ()-> postgreSQLContainer.getJdbcUrl());
-        registry.add("spring.datasource.username", ()-> postgreSQLContainer.getUsername());
-        registry.add("spring.datasource.password", ()-> postgreSQLContainer.getPassword());
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
     }
 
     private static DataSource getDataSource(){

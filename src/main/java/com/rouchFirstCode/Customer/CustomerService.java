@@ -10,12 +10,9 @@ import java.util.List;
 @Service
 public class CustomerService{
     private final CustomerDao customerDao;
-    private final CustomerRepository customerRepository;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao,
-                           CustomerRepository customerRepository) {
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
         this.customerDao = customerDao;
-        this.customerRepository = customerRepository;
     }
 
     public List<Customer> getListofAllCustomers(){
@@ -67,7 +64,6 @@ public class CustomerService{
             customer.setAge(customerRegistrationRequest.age());
             changes=true;
         }
-
         if(!changes){
             throw new NothingChangeException("pas de changement");
         }

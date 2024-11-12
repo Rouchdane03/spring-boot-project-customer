@@ -16,10 +16,12 @@ public class CustomerController {
     public List<Customer> getlistOfCustomers(){
         return customerService.getListofAllCustomers();
     }
+
     @GetMapping("/{id}")
     public Customer findCustomerById(@PathVariable("id") Integer id){
         return customerService.getCustomerById(id);
     }
+
     @PostMapping("/create")
     public void addCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest){
         customerService.sendCustomer(customerRegistrationRequest);
@@ -29,6 +31,7 @@ public class CustomerController {
     public void deleteCustomerById(@PathVariable("id") Integer id){
         customerService.cutCustomerWithThisId(id);
     }
+
     @PutMapping("/{id}")
     public void updateCustomerById(@PathVariable("id") Integer id, @RequestBody CustomerRegistrationRequest customerRegistrationRequest){
         customerService.updateCustomer(id,customerRegistrationRequest);
