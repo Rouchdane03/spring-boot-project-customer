@@ -1,0 +1,23 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "spring-boot-example",
+      "image": "rouchdane/spring-boot-example:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8081
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "value": "jdbc:postgresql://awseb-e-mmrsujq6kj-stack-awsebrdsdatabase-l7gqy9xpnpqv.c10s8wiekjft.eu-west-3.rds.amazonaws.com:5432/customer"
+        }
+      ]
+    }
+  ]
+}

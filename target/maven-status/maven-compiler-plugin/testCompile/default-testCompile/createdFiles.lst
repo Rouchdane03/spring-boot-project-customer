@@ -1,3 +1,12 @@
+com/rouchFirstCode/Customer/journey/CustomerIT.class
 com/amigoscode/TestContainersTest.class
 com/amigoscode/AbstractTestContainers.class
+com/rouchFirstCode/Customer/CustomerServiceTest.class
+com/rouchFirstCode/Customer/journey/CustomerIT$2.class
+com/rouchFirstCode/Customer/journey/CustomerIT$1.class
+com/rouchFirstCode/Customer/CustomerJPADataAccessServiceTest.class
 com/rouchFirstCode/Customer/CustomerJDBCDataAccessServiceTest.class
+com/rouchFirstCode/Customer/CustomerRowMapperTest.class
+com/rouchFirstCode/Customer/journey/CustomerIT$3.class
+com/rouchFirstCode/Customer/CustomerRepositoryTest.class
+com/rouchFirstCode/Customer/journey/CustomerIT$4.class
