@@ -1,2 +1,4 @@
-Initiation à spring-boot de fond en comble avec Amigoscode
-deuxième ligne ajoutée en local
+Projet Fullstack from scracth
+plus Devops
+Cloud provider utilisé pour héberger: AWS
+
