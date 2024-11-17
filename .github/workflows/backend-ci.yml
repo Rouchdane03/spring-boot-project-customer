@@ -10,9 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: spring-boot-example
     services:
      postgres:
       image: postgres:17.1
@@ -36,4 +33,5 @@ jobs:
           java-version: '17'
           cache: 'maven'
       - name: Build and run Unit/Integration Tests with Maven
+        working-directory: spring-boot-example
         run: mvn -ntp -B verify
