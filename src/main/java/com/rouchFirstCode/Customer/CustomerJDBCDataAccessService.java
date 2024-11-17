@@ -44,7 +44,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
     @Override
     public boolean existPersonWithEmail(String email) {
         var sql = """
-                SELECT * from customer WHERE name = ?
+                SELECT * from customer WHERE email = ?
                 """;
         return jdbcTemplate.query(sql,customerRowMapper,email)
                 .stream()
