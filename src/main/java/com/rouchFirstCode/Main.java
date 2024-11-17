@@ -15,9 +15,8 @@ import java.time.Period;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext
-       = SpringApplication.run(Main.class,args);
-        //printbeans(applicationContext);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(Main.class,args);
+        printBeans(applicationContext);
 }
 
 @Bean
@@ -45,7 +44,8 @@ public class Main {
         return new Foo("bar");
     }
     record Foo(String name){}
-    private static void printBeans (ConfigurableApplicationContext ctx) {
+
+    private static void printBeans(ConfigurableApplicationContext ctx) {
         String[] beanDefinitionNames = ctx.getBeanDefinitionNames();
         for (String b : beanDefinitionNames
         ) {
