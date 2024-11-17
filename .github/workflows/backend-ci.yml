@@ -29,5 +29,5 @@ jobs:
           java-version: '17'
           cache: 'maven'
       - name: Build and run Unit/Integration Tests with Maven
-        working-directory: spring-boot-project-amigoscode
+        working-directory: .
         run: mvn -ntp -B verify
