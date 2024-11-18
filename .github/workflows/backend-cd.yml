@@ -67,6 +67,6 @@ jobs:
           git config user.name github actions
           git config user.email github actions@github.com
           git add .
-          git commit -m "Update Dockerrun.aws.json specifically our docker app image with new tag ${{steps.build-number.outputs.BUILDER_NUMBER}}"
+          git commit -m "Update Dockerrun.aws.json specifically our docker app image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}"
           git push          
 
