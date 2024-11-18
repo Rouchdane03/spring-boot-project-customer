@@ -93,6 +93,6 @@ jobs:
         if: always()
         run: >
           curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":""Job Status ${{ job.status }}" :end:"}' 
+          --data '{"text":"Job Status ${{ job.status }} :end:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
           
