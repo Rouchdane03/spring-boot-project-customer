@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "spring-boot-example",
-      "image": "rouchdane/spring-boot-example:18.11.2024.05.58.00",
+      "image": "rouchdane/spring-boot-example:18.11.2024.06.02.27",
       "essential": true,
       "memory": 512,
       "portMappings": [
