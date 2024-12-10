@@ -38,19 +38,24 @@ public class Customer {
     )
     private Integer age;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private GenderEnum gender;
+
     public Customer(){}
-    public Customer(Integer id, String name, String email, Integer age) {
+    public Customer(Integer id, String name, String email, Integer age, GenderEnum gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender=gender;
     }
 
-    public Customer(String name, String email, Integer age) {
-        this.id = id;
+    public Customer(String name, String email, Integer age, GenderEnum gender) {
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender=gender;
     }
 
     public Integer getId() {
@@ -85,13 +90,22 @@ public class Customer {
         this.age = age;
     }
 
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
+                ", age=" + age + '\'' +
+                ", gender=" + gender +
                 '}';
     }
 }

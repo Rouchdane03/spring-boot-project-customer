@@ -58,7 +58,8 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                 "rouch",
                 "rouch@gmail.com",
-                21
+                21,
+                GenderEnum.FEMALE
         );
         //When
         underTest.uploadCustomer(customer);
@@ -104,7 +105,8 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                "diss",
                 "diss@gmail.com",
-                21
+                21,
+                GenderEnum.MALE
         );
         //When
         underTest.uploadCustomer(customer);

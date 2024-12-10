@@ -3,6 +3,7 @@ package com.rouchFirstCode.Customer.journey;
 import com.github.javafaker.Faker;
 import com.rouchFirstCode.Customer.Customer;
 import com.rouchFirstCode.Customer.CustomerRegistrationRequest;
+import com.rouchFirstCode.Customer.GenderEnum;
 import com.rouchFirstCode.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,12 @@ public class CustomerIT {
         String name = faker.name().fullName();
         String email = faker.internet().emailAddress()+ "_"+UUID.randomUUID()+ "@rouch.com";
         int age = RANDOM.nextInt(1,100);
+        GenderEnum gender = GenderEnum.MALE;
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
         //send a post request to our api
          webTestClient.post()
@@ -64,7 +67,7 @@ public class CustomerIT {
                 .returnResult()
                 .getResponseBody();
         //make sure customer is present
-        Customer expectedCustomer = new Customer(name, email, age);
+        Customer expectedCustomer = new Customer(name, email, age,gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -99,10 +102,12 @@ expectedCustomer.setId(id);
         String name = faker.name().fullName();
         String email = faker.internet().emailAddress()+ "_"+UUID.randomUUID()+ "@rouch.com";
         int age = RANDOM.nextInt(1,100);
+        GenderEnum gender = GenderEnum.FEMALE;
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
         //send a post request to our api
         webTestClient.post()
@@ -159,10 +164,12 @@ expectedCustomer.setId(id);
         String name = faker.name().fullName();
         String email = faker.internet().emailAddress()+ "_"+UUID.randomUUID()+ "@rouch.com";
         int age = RANDOM.nextInt(1,100);
+        GenderEnum gender = GenderEnum.MALE;
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
         //send a post request to our api
         webTestClient.post()
@@ -192,7 +199,7 @@ expectedCustomer.setId(id);
                 .findFirst()
                 .orElseThrow(()->new ResourceNotFoundException("id non trouvé"));
 
-        CustomerRegistrationRequest update = new CustomerRegistrationRequest("newName",null,null);
+        CustomerRegistrationRequest update = new CustomerRegistrationRequest("newName",null,null,null);
         //UPDATE customer with this id
         webTestClient.put()
                 .uri(customerURI+"/{id}", id)
@@ -216,12 +223,13 @@ expectedCustomer.setId(id);
                 .getResponseBody();
 
                 //making sure customer is updated
-        Customer customerExpected = new Customer(id, "newName", email,age);
+        Customer customerExpected = new Customer(id, "newName", email,age,gender);
         assertThat(theUpdatedCustomer.getId())
                 .isEqualTo(customerExpected.getId());
         assertThat(theUpdatedCustomer.getName()).isEqualTo(customerExpected.getName());
         assertThat(theUpdatedCustomer.getEmail()).isEqualTo(customerExpected.getEmail());
         assertThat(theUpdatedCustomer.getAge()).isEqualTo(customerExpected.getAge());
+        assertThat(theUpdatedCustomer.getGender()).isEqualTo(customerExpected.getGender());
 
     }
 }

@@ -36,7 +36,8 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                21
+                21,
+                GenderEnum.FEMALE
         );
         underTest.save(customer);
         //When
@@ -62,13 +63,14 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                21
+                21,
+                GenderEnum.MALE
         );
         underTest.save(customer);
 
         Integer id =  underTest.findAll().stream()
                 .filter(c -> c.getEmail().equals(email))
-                .map(c -> c.getId())
+                .map(Customer::getId)
                 .findFirst()
                 .orElseThrow(()-> new ResourceNotFoundException("rien n'est trouvé comme id"));
         //When

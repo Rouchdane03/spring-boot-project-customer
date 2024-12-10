@@ -3,6 +3,7 @@ package com.rouchFirstCode;
 import com.github.javafaker.Faker;
 import com.rouchFirstCode.Customer.Customer;
 import com.rouchFirstCode.Customer.CustomerRepository;
+import com.rouchFirstCode.Customer.GenderEnum;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,13 +12,17 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class Main {
+
+    private static final Random RANDOM = new Random();
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Main.class,args);
         //printBeans(applicationContext);
-}
+    }
 
 @Bean
     CommandLineRunner runner(CustomerRepository customerRepository) {
@@ -27,7 +32,12 @@ public class Main {
                     .atZone(java.time.ZoneId.systemDefault())
                     .toLocalDate();
             int age = Period.between(birthDate, LocalDate.now()).getYears();
-            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), age);
+
+            //Set random gender to the user
+            List<GenderEnum> enums = List.of(GenderEnum.MALE,GenderEnum.FEMALE);
+            int index = RANDOM.nextInt(enums.size());
+
+            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), age,enums.get(index));
            customerRepository.save(customer);
             /*
             List<Customer> customers = new ArrayList<>();

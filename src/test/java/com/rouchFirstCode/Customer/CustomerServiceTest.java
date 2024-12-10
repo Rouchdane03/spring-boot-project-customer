@@ -41,7 +41,7 @@ class CustomerServiceTest {
     void canGetCustomerById() {
         //Given
         int id = 10;
-        Customer customer = new Customer(id,"rouch","rouch@gmail.com",21);
+        Customer customer = new Customer(id,"rouch","rouch@gmail.com",21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
        underTest.getCustomerById(id);
@@ -72,7 +72,8 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                18);
+                18,
+                GenderEnum.MALE);
         //When
          underTest.sendCustomer(registrationRequest);
         //Then
@@ -83,6 +84,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(registrationRequest.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(registrationRequest.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(registrationRequest.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(registrationRequest.gender());
     }
 
     @Test
@@ -93,7 +95,8 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                18);
+                18,
+                GenderEnum.MALE);
         //When
         assertThatThrownBy(() -> underTest.sendCustomer(registrationRequest))
                 .isInstanceOf(ResourceAlreadyExistsException.class)
@@ -134,9 +137,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch_fx",
                 email+".fr",
-                22
+                22,
+                GenderEnum.MALE
         );
-        Customer customer = new Customer(id,"rouch",email,21);
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(registrationRequest.email())).thenReturn(false);
         //When
@@ -149,6 +153,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(registrationRequest.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(registrationRequest.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(registrationRequest.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(registrationRequest.gender());
 
     }
 
@@ -160,9 +165,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                21
+                21,
+                GenderEnum.FEMALE
         );
-        Customer customer = new Customer(id,"rouch",email,21);
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
              assertThatThrownBy(() -> underTest.updateCustomer(id, registrationRequest))
@@ -181,9 +187,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 name+"_Moudj",
                 null,
+                null,
                 null
         );
-        Customer customer = new Customer(id,name,email,21);
+        Customer customer = new Customer(id,name,email,21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         underTest.updateCustomer(id,registrationRequest);
@@ -195,6 +202,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(registrationRequest.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
     }
 
     @Test
@@ -205,9 +213,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 email+".fr",
+                null,
                 null
         );
-        Customer customer = new Customer(id,"rouch",email,21);
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(email+".fr")).thenReturn(false);
         //When
@@ -220,6 +229,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(registrationRequest.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
     }
 
     @Test
@@ -230,9 +240,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 null,
-                22
+                22,
+                null
         );
-        Customer customer = new Customer(id,"rouch",email,21);
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         underTest.updateCustomer(id,registrationRequest);
@@ -244,7 +255,35 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
         assertThat(capturedCustomer.getAge()).isEqualTo(registrationRequest.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
     }
+
+    @Test
+    void updateCustomer_Only_Gender_Changed() {
+        //Given
+        Integer id = 10;
+        String email = "rouch@gmail.com";
+        CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
+                null,
+                null,
+                null,
+                GenderEnum.FEMALE
+        );
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
+        Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+        //When
+        underTest.updateCustomer(id,registrationRequest);
+        //Then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+        Mockito.verify(customerDao,Mockito.times(1)).updateThisCustomer(customerArgumentCaptor.capture());
+        Customer capturedCustomer = customerArgumentCaptor.getValue();
+        assertThat(capturedCustomer.getId()).isNotNull();
+        assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
+        assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+        assertThat(capturedCustomer.getGender()).isEqualTo(registrationRequest.gender());
+    }
+
     @Test
     void updateCustomer_Email_Already_Exists_Throws_ResourceAlreadyExistsException() {
         //Given
@@ -253,9 +292,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 email+".fr",
+                null,
                 null
         );
-        Customer customer = new Customer(id,"rouch",email,21);
+        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(email+".fr")).thenReturn(true);
         //When
