@@ -1,3 +1,3 @@
 package com.rouchFirstCode.Customer;
 
-public record CustomerRegistrationRequest(String name, String email,Integer age) {}
+public record CustomerRegistrationRequest(String name, String email,Integer age, GenderEnum gender) {}
