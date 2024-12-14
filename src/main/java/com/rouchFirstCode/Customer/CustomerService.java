@@ -27,7 +27,7 @@ public class CustomerService{
     public void sendCustomer(CustomerRegistrationRequest customerRegistrationRequest){
         //check if email exists
         if(customerDao.existPersonWithEmail(customerRegistrationRequest.email())){
-            throw new ResourceAlreadyExistsException("email existe deja");
+            throw new ResourceAlreadyExistsException("email existe déjà");
         }
         customerDao.uploadCustomer(new Customer(
                 customerRegistrationRequest.name(),
@@ -56,7 +56,7 @@ public class CustomerService{
         }
         if(customerRegistrationRequest.email()!=null && !customerRegistrationRequest.email().equals(customer.getEmail())){
             if(customerDao.existPersonWithEmail(customerRegistrationRequest.email())){
-                throw new ResourceAlreadyExistsException("email existe deja");
+                throw new ResourceAlreadyExistsException("email existe déjà");
             }
             customer.setEmail(customerRegistrationRequest.email());
             changes=true;
