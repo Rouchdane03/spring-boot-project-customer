@@ -100,7 +100,7 @@ class CustomerServiceTest {
         //When
         assertThatThrownBy(() -> underTest.sendCustomer(registrationRequest))
                 .isInstanceOf(ResourceAlreadyExistsException.class)
-                .hasMessage("email existe deja");
+                .hasMessage("email existe déjà");
         //Then
         Mockito.verify(customerDao,Mockito.never()).uploadCustomer(Mockito.any());
     }
@@ -301,7 +301,7 @@ class CustomerServiceTest {
         //When
         assertThatThrownBy(() -> underTest.updateCustomer(id,registrationRequest))
                 .isInstanceOf(ResourceAlreadyExistsException.class)
-                .hasMessage("email existe deja");
+                .hasMessage("email existe déjà");
         //Then
         Mockito.verify(customerDao,Mockito.never()).updateThisCustomer(Mockito.any());
     }
