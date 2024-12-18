@@ -18,18 +18,6 @@
           "value": "jdbc:postgresql://awseb-e-mmrsujq6kj-stack-awsebrdsdatabase-l7gqy9xpnpqv.c10s8wiekjft.eu-west-3.rds.amazonaws.com:5432/customer"
         }
       ]
-    },
-    {
-      "name": "rouch-react-project-customer",
-      "image": "rouchdane/rouch-react-project-customer:latest",
-      "essential": true,
-      "memory": 256,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 5173
-        }
-      ]
     }
   ]
 }
