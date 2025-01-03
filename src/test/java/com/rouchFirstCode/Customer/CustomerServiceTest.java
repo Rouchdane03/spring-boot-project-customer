@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -19,13 +20,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CustomerServiceTest {
 
     private CustomerService underTest;
+
     @Mock
     private CustomerDao customerDao;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    private final CustomerMapper customerMapper = new CustomerMapper();
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDao);
+        underTest = new CustomerService(customerDao,passwordEncoder,customerMapper);
     }
 
     @Test
@@ -41,13 +47,16 @@ class CustomerServiceTest {
     void canGetCustomerById() {
         //Given
         int id = 10;
-        Customer customer = new Customer(id,"rouch","rouch@gmail.com",21,GenderEnum.MALE);
+        Customer customer = new Customer(id,"rouch","rouch@gmail.com", "password", 21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        CustomerDTO expected = customerMapper.apply(customer);
+
         //When
        underTest.getCustomerById(id);
-       Customer value = underTest.getCustomerById(id);
+       CustomerDTO value = underTest.getCustomerById(id);
         //Then
-        assertThat(value).isEqualTo(customer);
+        assertThat(value).isEqualTo(expected);
     }
 
     @Test
@@ -72,8 +81,11 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                18,
+                "password", 18,
                 GenderEnum.MALE);
+        String passwordHashed = "cxdefgvefrg";
+        Mockito.when(passwordEncoder.encode(registrationRequest.password())).thenReturn(passwordHashed);
+
         //When
          underTest.sendCustomer(registrationRequest);
         //Then
@@ -83,6 +95,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getId()).isNull();
         assertThat(capturedCustomer.getName()).isEqualTo(registrationRequest.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(registrationRequest.email());
+        assertThat(capturedCustomer.getPassword()).isEqualTo(passwordHashed);
         assertThat(capturedCustomer.getAge()).isEqualTo(registrationRequest.age());
         assertThat(capturedCustomer.getGender()).isEqualTo(registrationRequest.gender());
     }
@@ -95,7 +108,7 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                18,
+                "password", 18,
                 GenderEnum.MALE);
         //When
         assertThatThrownBy(() -> underTest.sendCustomer(registrationRequest))
@@ -137,10 +150,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch_fx",
                 email+".fr",
-                22,
+                "password", 22,
                 GenderEnum.MALE
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(registrationRequest.email())).thenReturn(false);
         //When
@@ -165,10 +178,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "rouch",
                 email,
-                21,
+                "password", 21,
                 GenderEnum.FEMALE
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
              assertThatThrownBy(() -> underTest.updateCustomer(id, registrationRequest))
@@ -187,10 +200,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 name+"_Moudj",
                 null,
-                null,
+                "password", null,
                 null
         );
-        Customer customer = new Customer(id,name,email,21,GenderEnum.FEMALE);
+        Customer customer = new Customer(id,name,email, "password", 21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         underTest.updateCustomer(id,registrationRequest);
@@ -213,10 +226,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 email+".fr",
-                null,
+                "password", null,
                 null
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.FEMALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(email+".fr")).thenReturn(false);
         //When
@@ -240,10 +253,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 null,
-                22,
+                "password", 22,
                 null
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         underTest.updateCustomer(id,registrationRequest);
@@ -266,10 +279,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 null,
-                null,
+                "password", null,
                 GenderEnum.FEMALE
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         underTest.updateCustomer(id,registrationRequest);
@@ -292,10 +305,10 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 null,
                 email+".fr",
-                null,
+                "password", null,
                 null
         );
-        Customer customer = new Customer(id,"rouch",email,21,GenderEnum.MALE);
+        Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.MALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         Mockito.when(customerDao.existPersonWithEmail(email+".fr")).thenReturn(true);
         //When

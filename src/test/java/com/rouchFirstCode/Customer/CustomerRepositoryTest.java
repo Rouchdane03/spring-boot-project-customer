@@ -1,6 +1,7 @@
 package com.rouchFirstCode.Customer;
 
 import com.amigoscode.AbstractTestContainers;
+import com.amigoscode.TestConfig;
 import com.rouchFirstCode.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class CustomerRepositoryTest extends AbstractTestContainers {
     @Autowired
     private CustomerRepository underTest;
@@ -36,7 +39,7 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                21,
+                "password", 21,
                 GenderEnum.FEMALE
         );
         underTest.save(customer);
@@ -63,7 +66,7 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                21,
+                "password", 21,
                 GenderEnum.MALE
         );
         underTest.save(customer);

@@ -28,6 +28,7 @@ class CustomerRowMapperTest {
         Mockito.when(resultSet.getInt("id")).thenReturn(1);
         Mockito.when(resultSet.getString("name")).thenReturn("John");
         Mockito.when(resultSet.getString("email")).thenReturn("john@gmail.com");
+        Mockito.when(resultSet.getString("password")).thenReturn("password");
         Mockito.when(resultSet.getInt("age")).thenReturn(21);
         Mockito.when(resultSet.getString("gender")).thenReturn("MALE");
         //When
@@ -36,6 +37,7 @@ class CustomerRowMapperTest {
         assertThat(customer.getId()).isEqualTo(1);
         assertThat(customer.getName()).isEqualTo("John");
         assertThat(customer.getEmail()).isEqualTo("john@gmail.com");
+        assertThat(customer.getPassword()).isEqualTo("password");
         assertThat(customer.getAge()).isEqualTo(21);
         assertThat(customer.getGender()).isEqualTo(GenderEnum.MALE);
     }

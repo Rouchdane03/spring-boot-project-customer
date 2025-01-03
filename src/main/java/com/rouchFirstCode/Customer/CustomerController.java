@@ -1,30 +1,40 @@
 package com.rouchFirstCode.Customer;
 
+import com.rouchFirstCode.jwt.JWTUtil;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
 @RequestMapping("api/v1/customer")
 public class CustomerController {
-    private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    private final CustomerService customerService;
+    private final JWTUtil jwtUtil;
+
+    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
         this.customerService = customerService;
+        this.jwtUtil=jwtUtil;
     }
 
     @GetMapping()
-    public List<Customer> getlistOfCustomers(){
+    public List<CustomerDTO> getlistOfCustomers(){
         return customerService.getListofAllCustomers();
     }
 
     @GetMapping("/{id}")
-    public Customer findCustomerById(@PathVariable("id") Integer id){
+    public CustomerDTO findCustomerById(@PathVariable("id") Integer id){
         return customerService.getCustomerById(id);
     }
 
     @PostMapping("/create")
-    public void addCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest){
+    public ResponseEntity<?> addCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest){
         customerService.sendCustomer(customerRegistrationRequest);
+        String myToken = jwtUtil.issueToken(customerRegistrationRequest.email(), "ROLE_USER");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, myToken)
+                .build();
     }
 
     @DeleteMapping("/{id}")

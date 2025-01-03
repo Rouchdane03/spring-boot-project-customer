@@ -18,4 +18,5 @@ public interface CustomerDao {
 
     void updateThisCustomer(Customer customer);
 
+    Optional<Customer> loadUserByHisUserName(String email);
 }

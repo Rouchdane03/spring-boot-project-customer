@@ -9,23 +9,26 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @SpringBootApplication
 public class Main {
 
     private static final Random RANDOM = new Random();
+
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Main.class,args);
         //printBeans(applicationContext);
     }
 
 @Bean
-    CommandLineRunner runner(CustomerRepository customerRepository) {
+    CommandLineRunner runner(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             Faker faker=new Faker();
             LocalDate birthDate = faker.date().birthday(18, 65).toInstant()
@@ -37,17 +40,10 @@ public class Main {
             List<GenderEnum> enums = List.of(GenderEnum.MALE,GenderEnum.FEMALE);
             int index = RANDOM.nextInt(enums.size());
 
-            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), age,enums.get(index));
+            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), passwordEncoder.encode(UUID.randomUUID().toString()), age,enums.get(index));
            customerRepository.save(customer);
-            /*
-            List<Customer> customers = new ArrayList<>();
-            customers.add(new Customer("rouch","adissa",21));
-            customers.add(new Customer("amakpe","hanane",19));
-            customerRepository.saveAll(customers);
-             */
-
         };
-    }
+   }
 
    @Bean
     public Foo getFoo(){

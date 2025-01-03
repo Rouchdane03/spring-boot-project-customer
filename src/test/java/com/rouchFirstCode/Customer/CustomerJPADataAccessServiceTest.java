@@ -1,16 +1,11 @@
 package com.rouchFirstCode.Customer;
 
-import com.amigoscode.AbstractTestContainers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerJPADataAccessServiceTest {
 
@@ -58,7 +53,7 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                 "rouch",
                 "rouch@gmail.com",
-                21,
+                "password", 21,
                 GenderEnum.FEMALE
         );
         //When
@@ -105,7 +100,7 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                "diss",
                 "diss@gmail.com",
-                21,
+                "password", 21,
                 GenderEnum.MALE
         );
         //When
