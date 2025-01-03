@@ -36,7 +36,7 @@ public class SecurityFilterChainConfig {
         http.csrf(csrf->csrf.disable())// Désactiver CSRF avec la nouvelle syntaxe
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/customer/create", "/api/v1/auth/login", "/ping")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/customer/create", "/api/v1/auth/login")
                         .permitAll()// Autoriser le POST sur cette route
                         .requestMatchers(HttpMethod.GET,"/ping")
                         .permitAll()
