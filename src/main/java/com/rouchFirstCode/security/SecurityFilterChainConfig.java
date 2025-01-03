@@ -37,7 +37,9 @@ public class SecurityFilterChainConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/v1/customer/create", "/api/v1/auth/login", "/ping")
-                        .permitAll() // Autoriser le POST sur cette route
+                        .permitAll()// Autoriser le POST sur cette route
+                        .requestMatchers(HttpMethod.GET,"/ping")
+                        .permitAll()
                         .anyRequest() //any other request
                         .authenticated()) // Tout le reste(other requests) nécessite une authentification
                         .sessionManagement(
