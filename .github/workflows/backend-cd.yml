@@ -77,6 +77,7 @@ jobs:
           version_description: ${{github.SHA}}
           region: ${{ secrets.AWS_EB_REGION }}
           deployment_package: Dockerrun.aws.json
+          wait_for_environment_recovery: 140
       - name: Send deployment to AWS news with AWS Elastic Beanstalk to slack
         run: >
           curl -X POST -H 'Content-type: application/json' 
