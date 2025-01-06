@@ -39,8 +39,9 @@ public class Main {
             //Set random gender to the user
             List<GenderEnum> enums = List.of(GenderEnum.MALE,GenderEnum.FEMALE);
             int index = RANDOM.nextInt(enums.size());
-
-            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), passwordEncoder.encode(UUID.randomUUID().toString()), age,enums.get(index));
+            String pwdBeforeEncoding = UUID.randomUUID().toString();
+            System.out.println(pwdBeforeEncoding);
+            Customer customer = new Customer(faker.name().fullName(),faker.internet().emailAddress(), passwordEncoder.encode(pwdBeforeEncoding), age,enums.get(index));
            customerRepository.save(customer);
         };
    }

@@ -77,6 +77,12 @@ public class CustomerService{
             customer.setEmail(customerRegistrationRequest.email());
             changes=true;
         }
+        //pour le mot de passe c'est subtil card dans la base c'est encodé et le user donne un mdp plein text
+        if(customerRegistrationRequest.password()!=null && !passwordEncoder.matches(customerRegistrationRequest.password(),customer.getPassword())){
+            customer.setPassword(passwordEncoder.encode(customerRegistrationRequest.password()));
+            changes=true;
+        }
+
         if(customerRegistrationRequest.age()!=null && !customerRegistrationRequest.age().equals(customer.getAge())){
             customer.setAge(customerRegistrationRequest.age());
             changes=true;

@@ -183,6 +183,7 @@ class CustomerServiceTest {
         );
         Customer customer = new Customer(id,"rouch",email, "password", 21,GenderEnum.FEMALE);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+        Mockito.when(passwordEncoder.matches(registrationRequest.password(),customer.getPassword())).thenReturn(true);
         //When
              assertThatThrownBy(() -> underTest.updateCustomer(id, registrationRequest))
                      .isInstanceOf(NothingChangeException.class)

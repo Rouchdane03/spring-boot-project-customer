@@ -95,6 +95,9 @@ public class Customer implements UserDetails {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public Integer getAge() {
         return age;
     }
