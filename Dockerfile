@@ -1,15 +1,18 @@
-# Use the Eclipse temurin alpine official image
-# https://hub.docker.com/_/eclipse-temurin
 FROM eclipse-temurin:17-jdk-alpine
-
-# Create and change to the app directory.
 WORKDIR /app
 
-# Copy local code to the container image.
-COPY . ./
+# Copie le wrapper et donne les droits (et enlève CRLF si besoin)
+COPY .mvn .mvn
+COPY mvnw .
+RUN chmod +x mvnw && sed -i 's/\r$//' mvnw
 
-# Build the app.
-RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
+# (cache deps)
+COPY pom.xml .
+RUN ./mvnw -q -B -DskipTests dependency:go-offline
 
-# Run the app by dynamically finding the JAR file in the target directory
-CMD ["sh", "-c", "java -jar target/*.jar "]
+# code + build
+COPY src ./src
+RUN ./mvnw -q -B -DskipTests clean package
+
+# run
+CMD ["sh","-c","java -jar target/*.jar "]
