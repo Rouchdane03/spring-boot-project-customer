@@ -3,4 +3,5 @@
 **/node_modules
 **/.DS_store
 **/*.iml
+./src/main/resources/application.properties
 
