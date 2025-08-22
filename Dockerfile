@@ -15,4 +15,4 @@ COPY src ./src
 RUN ./mvnw -q -B -DskipTests clean package
 
 # run
-CMD ["sh","-c","java -jar target/*.jar "]
+CMD ["sh","-c","java -jar target/*.jar --server.port=${PORT}"]
