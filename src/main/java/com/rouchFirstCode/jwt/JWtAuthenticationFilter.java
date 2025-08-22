@@ -39,6 +39,11 @@ public class JWtAuthenticationFilter extends OncePerRequestFilter {
                 return; //to stop the code to not execute the rest
             }
 
+            if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+                filterChain.doFilter(request, response); //we don't need token for options
+                return;
+            }
+
             String jwt = authHeader.substring(7);
             String subjectFromTheToken = jwtUtil.getSubject(jwt);
 
