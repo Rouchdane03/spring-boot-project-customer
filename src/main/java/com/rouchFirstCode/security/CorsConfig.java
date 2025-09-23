@@ -19,7 +19,8 @@ public class CorsConfig {
         configuration.setAllowedOriginPatterns(List.of(
                 "https://front-react-project-customer.vercel.app", // prod
                 "https://*.vercel.app",                             // toutes les previews
-                "http://localhost:5173"                             // dev local (vite)
+                "http://localhost:5173",                             // dev local (Vite)
+                "http://localhost:3000"                            // dev local au sein du conteneur(vite)
         ));
 
         configuration.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
